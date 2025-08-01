@@ -25,7 +25,9 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
-
+app.use("/",(req,res)=>{
+  res.send("Hello")
+})
 app.use("/", userRoutes);
 
 server.listen(process.env.PORT, () => {
