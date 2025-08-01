@@ -21,7 +21,7 @@ const login = async (req, res) => {
     if (!user) return res.send("acc does not exist");
     const match = await bcrypt.compare(req.body.password, user.password);
     if (!match) return res.send("wrong password");
-    const token = jwt.sign({ uid: user.uid, platform: user.platform }, "abcd", { expiresIn: "2h" });
+    const token = jwt.sign({ uid: user.uid, platform: user.platform }, `${process.env.JWT_SECRET}`, { expiresIn: "2h" });
     res.json({ token, name: user.name, platform: user.platform });
   } catch (err) {
     res.send("error in login");
@@ -30,7 +30,7 @@ const login = async (req, res) => {
 
 const islogin = (req, res, next) => {
   try {
-    const decoded = jwt.verify(req.headers.authorization, "abcd");
+    const decoded = jwt.verify(req.headers.authorization, `${process.env.JWT_SECRET}`);
     req.user = { uid: decoded.uid, platform: decoded.platform }; // not req.header
     next();
   } catch (err) {

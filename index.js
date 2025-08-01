@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/socialdb")
+mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB connected!"));
 
 // Attach Socket.IO to every request
@@ -28,6 +28,6 @@ app.use((req, res, next) => {
 
 app.use("/", userRoutes);
 
-server.listen(5000, () => {
-  console.log("Server running on port 5000");
+server.listen(process.env.PORT, () => {
+  console.log(`Server running on port ${process.env.PORT}`);
 });
